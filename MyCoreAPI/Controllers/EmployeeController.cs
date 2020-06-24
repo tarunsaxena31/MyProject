@@ -31,9 +31,10 @@ namespace MyCoreAPI.Controllers
         [HttpGet]
         [Route("{employeeId}")]
         public Employee GetEmployee(int employeeId)
-        {        
+        {       
 
             return _employeeRepository.GetEmployeeById(employeeId);
+
         }
 
         //http://localhost:12817/Employee/CreateEmployee/Pratyush/Saxena/07-11-2019/pratyush.saxena@gmail.com/7350312048/wakad
