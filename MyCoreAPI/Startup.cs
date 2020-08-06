@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Http.Cors;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -22,9 +23,22 @@ namespace MyCoreAPI
 
         public IConfiguration Configuration { get; }
 
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("http://localhost:12817/Employee",
+                                                          "http://localhost:12817")
+                                                  .AllowAnyHeader()
+                                                  .AllowAnyMethod();
+                                  });
+            });
             services.AddControllers();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddDbContext<EmployeeDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("myconn")));
@@ -47,6 +61,9 @@ namespace MyCoreAPI
                 route.MapRoute("default", "{controller}/{action}/{id}");
 
             });
+
+            app.UseCors(MyAllowSpecificOrigins);
+
             app.UseRouting();
             //app.UseMvcWithDefaultRoute();
             app.UseAuthorization();

@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Http.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace MyCoreAPI.Controllers
-{
+{    
     [ApiController]
     [Route("[controller]")]
     public class EmployeeController : ControllerBase
@@ -55,7 +56,7 @@ namespace MyCoreAPI.Controllers
             //    MobileNumber = mobileNumber,
             //    Address = address
             //};
-
+                        
             int employeeId =  _employeeRepository.CreateEmployee(employee);
 
             return employeeId;
@@ -72,7 +73,7 @@ namespace MyCoreAPI.Controllers
             //return true;
         }
 
-        [HttpPost]
+        [HttpDelete]
         [Route("DeleteEmployee/{employeeId}")]
         public IActionResult DeleteEmployee(int? employeeId)
         {
